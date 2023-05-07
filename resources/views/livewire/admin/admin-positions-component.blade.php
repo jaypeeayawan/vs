@@ -1,5 +1,5 @@
 @section('page-title')
-    {{ $title }}
+    {{ $pageTitle }}
 @endsection
 
 <div class="content  d-flex flex-column flex-column-fluid" id="kt_content">
@@ -10,7 +10,7 @@
             <div class="d-flex align-items-center flex-wrap mr-2">
 
                 <!--begin::Page Title-->
-                <h5 class="text-dark font-weight-bold mt-2 mb-2 mr-5">{{ $title }}</h5>
+                <h5 class="text-dark font-weight-bold mt-2 mb-2 mr-5">{{ $pageTitle }}</h5>
                 <!--end::Page Title-->
 
                 <!--begin::Actions-->
@@ -189,10 +189,5 @@
     window.livewire.on('postDeleted', () => {
         $('#delete-record-modal').modal('hide');
     });
-
-
-    
-
-
 </script>
 @endpush

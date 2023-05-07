@@ -140,7 +140,7 @@ class AdminPositionsComponent extends Component
 
     public function render()
     {
-        $title = 'Position Manager';
+        $pageTitle = 'Position Manager';
         $search = '%' .$this->searchTerm. '%';
 
         $positions = Positions::where('positionname', 'LIKE', $search)
@@ -149,7 +149,7 @@ class AdminPositionsComponent extends Component
 
         return view('livewire.admin.admin-positions-component',
             [
-                'title' => $title,
+                'pageTitle' => $pageTitle,
                 'positions' => $positions
             ]
         )
