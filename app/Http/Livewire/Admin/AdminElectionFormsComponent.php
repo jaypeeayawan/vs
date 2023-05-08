@@ -35,6 +35,9 @@ class AdminElectionFormsComponent extends Component
         ]);
 
         try{
+
+            $this->updateFormIsActiveStatus();
+
             $form = new ElectionForms();
             $form->title = $this->title;
             $form->isactive = 1;
@@ -126,6 +129,66 @@ class AdminElectionFormsComponent extends Component
         }
     }
 
+    public function deactivateForm()
+    {
+        try{
+            $this->updateFormIsActiveStatus();
+
+            // Set Flash Message
+            $this->dispatchBrowserEvent('alert',[
+                'type' => 'success',
+                'message' => "Election form has been deactivated successfully!"
+            ]);
+
+            $this->resetInputFields();
+            $this->emit('postDeactivateForm');
+
+        }catch(\Exception $e){
+            // Set Flash Message
+            $this->dispatchBrowserEvent('alert',[
+                'type' => 'error',
+                'message' => "Something went wrong while deactivating election form!"
+            ]);
+
+            $this->resetInputFields();
+            $this->emit('postDeactivateForm');
+        }
+    }
+
+    public function activateForm()
+    {
+        try{
+            $this->updateFormIsActiveStatus();
+
+            $form = ElectionForms::find($this->electionformid);
+            $form->isactive = 1;
+            $form->save();
+
+            // Set Flash Message
+            $this->dispatchBrowserEvent('alert',[
+                'type' => 'success',
+                'message' => "Election form has been activated successfully!"
+            ]);
+
+            $this->resetInputFields();
+            $this->emit('postActivateForm');
+
+        }catch(\Exception $e){
+            // Set Flash Message
+            $this->dispatchBrowserEvent('alert',[
+                'type' => 'error',
+                'message' => "Something went wrong while activating election form!"
+            ]);
+
+            $this->resetInputFields();
+            $this->emit('postActivateForm');
+        }
+    }
+
+    private function updateFormIsActiveStatus() {
+        ElectionForms::query()->update(['isactive' => 0]);
+    }
+
     private function resetInputFields(){
         $this->title = '';
     }
@@ -140,11 +203,11 @@ class AdminElectionFormsComponent extends Component
 
     public function render()
     {
-        $pageTitle = 'ELection Form Manager';
+        $pageTitle = 'Election Form Manager';
         $search = '%' .$this->searchTerm. '%';
 
         $forms = ElectionForms::where('title', 'LIKE', $search)
-            ->orderBy('title', 'asc')
+            ->orderBy('id', 'desc')
             ->paginate(10);
 
         return view('livewire.admin.admin-election-forms-component',

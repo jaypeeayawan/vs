@@ -72,6 +72,7 @@
                                 <thead>
                                     <tr>
                                         <th>Title</th>
+                                        <th>Status</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
@@ -79,13 +80,28 @@
                                     @foreach ($forms as $form)
                                         <tr>
                                             <td><span class="text-dark-75 font-weight-bolder d-block font-size-lg">{{ $form->title }}</span></td>
+                                            @if ($form->isactive == 1)
+                                                <td class="text-success">Active</td>
+                                            @else
+                                                <td class="text-warning">Inactive</td>
+                                            @endif
                                             <td>
                                                 <a href="#" class="update-record" wire:click="fetch({{ $form->id }})" data-toggle="modal" data-target="#update-record-modal">
                                                     <i class="fas fa-edit text-primary"></i>
                                                 </a>
-                                                <a href="#" class="delete-record" wire:click="fetch({{ $form->id }})" data-toggle="modal" data-target="#delete-record-modal">
+                                                <a href="#" class="delete-record mr-5" wire:click="fetch({{ $form->id }})" data-toggle="modal" data-target="#delete-record-modal">
                                                     <i class="fas fa-trash text-danger"></i>
                                                 </a>
+
+                                                @if ($form->isactive == 1)
+                                                    <a href="" class="activate-record" wire:click="fetch({{ $form->id }})" data-toggle="modal" data-target="#deactivate-form-modal">
+                                                        <i class="fas fa-lock-open text-success" data-toggle="tooltip" title="Deactivate Form"></i>
+                                                    </a>
+                                                @else
+                                                    <a href="" class="deactivate-record" wire:click="fetch({{ $form->id }})" data-toggle="modal" data-target="#activate-form-modal">
+                                                        <i class="fas fa-lock text-warning" data-toggle="tooltip" title="Activate Form"></i>
+                                                    </a>
+                                                @endif
                                             </td>
                                         </tr>   
                                     @endforeach
@@ -114,7 +130,7 @@
                 <div class="modal-body">
                     <form wire:submit.prevent="store">
                         <div class="form-group">
-                            <label for="title">Description</label>
+                            <label for="title">Title</label>
                             <input type="text" class="form-control" id="title" placeholder="Enter Title" wire:model="title">
                             @error('title') 
                                 <span class="text-danger error">{{ $message }}</span>
@@ -176,10 +192,54 @@
         </div>
     </div>
 
+    <!-- Modal Deactivate -->
+    <div wire:ignore.self class="modal fade" id="deactivate-form-modal" tabindex="-1" role="dialog" aria-labelledby="deactivateForm" aria-hidden="true" data-backdrop="static">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deactivateForm">Deactivate Form</h5>
+                </div>
+                <div class="modal-body">
+                    <form wire:submit.prevent="deactivateForm">
+                        <div class="text-danger"><i class="text-danger flaticon-warning"></i> Are your sure?</div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" wire:click.prevent="cancel()" class="btn btn-secondary close-btn" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-danger close-modal">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Activate -->
+    <div wire:ignore.self class="modal fade" id="activate-form-modal" tabindex="-1" role="dialog" aria-labelledby="activateForm" aria-hidden="true" data-backdrop="static">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="activateForm">Activate Form</h5>
+                </div>
+                <div class="modal-body">
+                    <form wire:submit.prevent="activateForm">
+                        <div class="text-danger"><i class="text-danger flaticon-warning"></i> Are your sure?</div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" wire:click.prevent="cancel()" class="btn btn-secondary close-btn" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-danger close-modal">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
 </div>
 
 @push('scripts')
 <script type="text/javascript">
+    $(function() {
+        $('[data-toggle="tooltip"]').tooltip();
+    });
+
     window.livewire.on('postStored', () => {
         $('#new-record-modal').modal('hide');
     });
@@ -188,6 +248,12 @@
     });
     window.livewire.on('postDeleted', () => {
         $('#delete-record-modal').modal('hide');
+    });
+    window.livewire.on('postDeactivateForm', () => {
+        $('#deactivate-form-modal').modal('hide');
+    });
+    window.livewire.on('postActivateForm', () => {
+        $('#activate-form-modal').modal('hide');
     });
 </script>
 @endpush

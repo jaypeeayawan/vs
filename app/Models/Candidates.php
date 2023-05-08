@@ -26,4 +26,17 @@ class Candidates extends Model
         return $this->belongsTo(ElectionForms::class, 'electionforms_id');
     }
 
+    public function scopeSearch($query, $term)
+    {
+        $term = "%$term%";
+        $query->where(function($query) use ($term){
+            $query->where('positions_id', '=', $term)
+                ->orWhere('firstname', 'LIKE', $term)
+                ->orWhere('middlename', 'LIKE', $term)
+                ->orWhere('lastname', 'LIKE', $term)
+                ->orWhere('electionforms_id', '=', $term);
+            }
+        );
+    }
+
 }
