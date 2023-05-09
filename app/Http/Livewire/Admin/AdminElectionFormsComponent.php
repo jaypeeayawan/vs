@@ -101,7 +101,7 @@ class AdminElectionFormsComponent extends Component
             ]);
 
             $this->resetInputFields();
-            $this->emit('postStored');
+            $this->emit('postUpdated');
         }
     }
 

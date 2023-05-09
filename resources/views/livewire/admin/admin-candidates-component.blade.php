@@ -99,7 +99,7 @@
                                         <tr>
                                             <td>
                                             @if ($candidate->photo)
-                                                <img src="{{ asset('photos/photos') }}/{{ $candidate->photo }}" alt="Photo" style="border-radius: 50%; width: 70px;">
+                                                <img src="{{ asset('photos/photos') }}/{{ $candidate->photo }}" alt="Photo" style="border-radius: 50%; height: 80px;">
                                             @else
                                                 <img src="{{ asset('photos//photos/default.png') }}" alt="Photo" style="border-radius: 50%; width: 70px;">
                                             @endif
@@ -211,14 +211,65 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="udpateRecord">Update Department</h5>
+                    <h5 class="modal-title" id="udpateRecord">Update Candidate</h5>
                 </div>
                 <div class="modal-body">
-                    <form wire:submit.prevent="update">
+                    <form wire:submit.prevent="update" enctype="multipart/form-data">
+                        @csrf
                         <div class="form-group">
-                            <label for="_positionname">Description</label>
-                            <input type="text" class="form-control" id="_positionname" placeholder="Enter Position" wire:model="positionname">
-                            @error('positionname') 
+                            <label for="newphoto">Photo</label>
+                            <input type="file" id="newphoto" class="input-file" wire:model="newphoto">
+                            @if($newphoto)
+                                <img src="{{ $newphoto->temporaryUrl() }}" width="120" style="margin-top: 5px;">
+                                @error('newphoto')
+                                    <p class="text-danger">{{ $message }}</p>
+                                @enderror
+                            @else
+                                <img src="{{ asset('photos/photos') }}/{{ $currentphoto }}" width="120">
+                            @endif
+                        </div>
+                        <div class="form-group">
+                            <label for="firstname">Firstname</label>
+                            <input type="text" class="form-control" id="firstname" placeholder="Enter Firstname" wire:model="firstname">
+                            @error('firstname') 
+                                <span class="text-danger error">{{ $message }}</span>
+                            @enderror
+                        </div>
+                        <div class="form-group">
+                            <label for="middlename">Middlename</label>
+                            <input type="text" class="form-control" id="middlename" placeholder="Enter middlename" wire:model="middlename">
+                            @error('middlename') 
+                                <span class="text-danger error">{{ $message }}</span>
+                            @enderror
+                        </div>
+                        <div class="form-group">
+                            <label for="lastname">Lastname</label>
+                            <input type="text" class="form-control" id="lastname" placeholder="Enter lastname" wire:model="lastname">
+                            @error('lastname') 
+                                <span class="text-danger error">{{ $message }}</span>
+                            @enderror
+                        </div>
+                        <div class="form-group">
+                            <label for="position">Position</label>
+                            <select class="form-control" id="position" wire:model="positionsid">
+                                <option value="">Select Position</option>
+                                @foreach($positions as $position)
+                                    <option value="{{ $position->id }}">{{ $position->positionname }}</option>
+                                @endforeach
+                            </select>
+                            @error('positionsid') 
+                                <span class="text-danger error">{{ $message }}</span>
+                            @enderror
+                        </div>
+                        <div class="form-group">
+                            <label for="electionform">Election Form</label>
+                            <select class="form-control" id="electionform" wire:model="electionformsid">
+                                <option value="">Select Election Form</option>
+                                @foreach($forms as $form)
+                                    <option value="{{ $form->id }}">{{ $form->title }}</option>
+                                @endforeach
+                            </select>
+                            @error('electionformsid') 
                                 <span class="text-danger error">{{ $message }}</span>
                             @enderror
                         </div>
@@ -237,7 +288,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="deleteRecord">Delete Department</h5>
+                    <h5 class="modal-title" id="deleteRecord">Delete Candidate</h5>
                 </div>
                 <div class="modal-body">
                     <form wire:submit.prevent="delete">
