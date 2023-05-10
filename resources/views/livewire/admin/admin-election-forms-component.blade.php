@@ -81,9 +81,9 @@
                                         <tr>
                                             <td><span class="text-dark-75 font-weight-bolder d-block font-size-lg">{{ $form->title }}</span></td>
                                             @if ($form->isactive == 1)
-                                                <td class="text-success">Active</td>
+                                                <td><span class="label label-success label-inline">Active</span></td>
                                             @else
-                                                <td class="text-warning">Inactive</td>
+                                                <td><span class="label label-danger label-inline">Inactive</span></td>
                                             @endif
                                             <td>
                                                 <a href="#" class="update-record" wire:click="fetch({{ $form->id }})" data-toggle="modal" data-target="#update-record-modal">

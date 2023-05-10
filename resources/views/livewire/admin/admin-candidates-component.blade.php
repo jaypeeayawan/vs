@@ -215,7 +215,6 @@
                 </div>
                 <div class="modal-body">
                     <form wire:submit.prevent="update" enctype="multipart/form-data">
-                        @csrf
                         <div class="form-group">
                             <label for="newphoto">Photo</label>
                             <input type="file" id="newphoto" class="input-file" wire:model="newphoto">
