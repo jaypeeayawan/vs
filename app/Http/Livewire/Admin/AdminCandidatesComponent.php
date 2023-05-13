@@ -227,7 +227,17 @@ class AdminCandidatesComponent extends Component
     public function render()
     {
         $pageTitle = 'Candidates Manager';
-        $candidates = Candidates::when($this->searchByPosition, function($query){
+        $candidates = Candidates::select(
+                'candidates.id as candidatesid',
+                'candidates.positions_id',
+                'candidates.electionforms_id',
+                'persons.id as personsid',
+                'persons.firstname',
+                'persons.middlename',
+                'persons.lastname',
+                'persons.photo'
+            )
+            ->when($this->searchByPosition, function($query){
                 $query->where('positions_id', $this->searchByPosition);
             })
             ->when($this->searchByForm, function($query) {

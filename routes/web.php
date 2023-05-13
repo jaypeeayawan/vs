@@ -1,6 +1,9 @@
 <?php
 use App\Http\Controllers\AuthRedirects;
 use App\Http\Livewire\HomeComponent;
+use App\Http\Livewire\VotersPortalComponent;
+use App\Http\Livewire\VotersRegistrationComponent;
+use App\Http\Livewire\VotingFormComponent;
 use App\Http\Livewire\LoginComponent;
 
 use App\Http\Livewire\Admin\AdminDashboardComponent;
@@ -26,21 +29,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
-
 Route::get('/', [AuthRedirects::class, 'redirecTo']);
-
-// Route::middleware([
-//     'auth:sanctum',
-//     config('jetstream.auth_session'),
-//     'verified'
-// ])->group(function () {
-//     Route::get('/dashboard', function () {
-//         return view('dashboard');
-//     })->name('dashboard');
-// });
+Route::get('home', HomeComponent::class)->name('home');
+Route::get('voters.portal', VotersPortalComponent::class)->name('voters.portal');
+Route::get('voters.registration', VotersRegistrationComponent::class)->name('voters.registration');
+Route::get('voting.form/{votersid}', VotingFormComponent::class)->name('voting.form');
 
 // for user routes
 Route::middleware(['auth:sanctum', 'verified', 'authuser'])->group(function () {

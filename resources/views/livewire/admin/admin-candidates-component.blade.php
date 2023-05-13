@@ -108,10 +108,10 @@
                                             <td><span class="text-dark-75 font-weight-bolder d-block font-size-lg">{{ $candidate->positions->positionname }}</span></td>
                                             <td><span class="text-dark-75 font-weight-bolder d-block font-size-lg">{{ $candidate->electionforms->title }}</span></td>
                                             <td>
-                                                <a href="#" class="update-record" wire:click="fetch({{ $candidate->id }})" data-toggle="modal" data-target="#update-record-modal">
+                                                <a href="#" class="update-record" wire:click="fetch({{ $candidate->candidatesid }})" data-toggle="modal" data-target="#update-record-modal">
                                                     <i class="fas fa-edit text-primary"></i>
                                                 </a>
-                                                <a href="#" class="delete-record" wire:click="fetch({{ $candidate->id }})" data-toggle="modal" data-target="#delete-record-modal">
+                                                <a href="#" class="delete-record" wire:click="fetch({{ $candidate->candidatesid }})" data-toggle="modal" data-target="#delete-record-modal">
                                                     <i class="fas fa-trash text-danger"></i>
                                                 </a>
                                             </td>

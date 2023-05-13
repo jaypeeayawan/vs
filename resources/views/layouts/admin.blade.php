@@ -617,7 +617,7 @@
                                 </span>
                             </a>
                             <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="btn btn-sm btn-light-primary font-weight-bolder py-2 px-5">Sign Out</a>
-                            <form id="logout-form" method="POST" action="{{route('logout')}}">
+                            <form id="logout-form" method="POST" action="{{ route('logout') }}">
                                 @csrf
                             </form>
                         </div>

@@ -4,12 +4,12 @@ namespace App\Http\Livewire;
 
 use Livewire\Component;
 
-class HomeComponent extends Component
+class VotersPortalComponent extends Component
 {
     public function render()
     {
-        $pageTitle = 'Home Page';
-        return view('livewire.home-component',
+        $pageTitle = 'Voters Portal';
+        return view('livewire.voters-portal-component',
             [
                 'pageTitle' => $pageTitle,
             ]

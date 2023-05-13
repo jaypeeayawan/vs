@@ -72,6 +72,8 @@
                                 <thead>
                                     <tr>
                                         <th>Description</th>
+                                        <th>Max Vote</th>
+                                        <th>Priority/Order</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
@@ -79,6 +81,8 @@
                                     @foreach ($positions as $position)
                                         <tr>
                                             <td><span class="text-dark-75 font-weight-bolder d-block font-size-lg">{{ $position->positionname }}</span></td>
+                                            <td><span class="text-dark-75 font-weight-bolder d-block font-size-lg">{{ $position->max_vote }}</span></td>
+                                            <td><span class="text-dark-75 font-weight-bolder d-block font-size-lg">{{ $position->order }}</span></td>
                                             <td>
                                                 <a href="#" class="update-record" wire:click="fetch({{ $position->id }})" data-toggle="modal" data-target="#update-record-modal">
                                                     <i class="fas fa-edit text-primary"></i>
@@ -120,6 +124,21 @@
                                 <span class="text-danger error">{{ $message }}</span>
                             @enderror
                         </div>
+                        <div class="form-group">
+                            <label for="maxvote">Max Vote</label>
+                            <input type="text" class="form-control" id="maxvote" placeholder="Enter Description" wire:model="maxvote">
+                            <span class="form-text text-muted">No. of candidates to be selected in this position</span>
+                            @error('maxvote') 
+                                <span class="text-danger error">{{ $message }}</span>
+                            @enderror
+                        </div>
+                        <div class="form-group">
+                            <label for="order">Priority/Order</label>
+                            <input type="text" class="form-control" id="order" placeholder="Enter Priority" wire:model="order">
+                            @error('order') 
+                                <span class="text-danger error">{{ $message }}</span>
+                            @enderror
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" wire:click.prevent="cancel()" class="btn btn-secondary close-btn" data-dismiss="modal">Close</button>
@@ -143,6 +162,21 @@
                             <label for="_positionname">Description</label>
                             <input type="text" class="form-control" id="_positionname" placeholder="Enter Position" wire:model="positionname">
                             @error('positionname') 
+                                <span class="text-danger error">{{ $message }}</span>
+                            @enderror
+                        </div>
+                        <div class="form-group">
+                            <label for="_maxvote">Max Vote</label>
+                            <input type="text" class="form-control" id="_maxvote" placeholder="Enter Description" wire:model="maxvote">
+                            <span class="form-text text-muted">No. of candidates to be selected in this position</span>
+                            @error('maxvote') 
+                                <span class="text-danger error">{{ $message }}</span>
+                            @enderror
+                        </div>
+                        <div class="form-group">
+                            <label for="_order">Priority/Order</label>
+                            <input type="text" class="form-control" id="_order" placeholder="Enter Priority" wire:model="order">
+                            @error('order') 
                                 <span class="text-danger error">{{ $message }}</span>
                             @enderror
                         </div>

@@ -3,7 +3,7 @@
     <!--begin::Head-->
     <head>
         <meta charset="utf-8"/>
-        <title>VS | @yield('page-title')</title>
+        <title>VS | Voting Form</title>
         <meta name="description" content="Home Page"/>
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
         <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -13,7 +13,7 @@
         <!--end::Fonts-->
 
         <!--begin::Page Custom Styles(used by this page)-->
-        <link href="{{ asset('assets/css/pages/login/classic/login-4.css') }}" rel="stylesheet" type="text/css"/>
+        <link href="{{ asset('assets/css/pages/wizard/wizard-2.css') }}" rel="stylesheet" type="text/css">
         <!--end::Page Custom Styles-->
 
         <!--begin::Global Theme Styles(used by all pages)-->
@@ -52,6 +52,10 @@
         <script src="{{ asset('assets/plugins/custom/prismjs/prismjs.bundle.js') }}"></script>
         <script src="{{ asset('assets/js/scripts.bundle.js') }}"></script>
         <!--end::Global Theme Bundle-->
+
+        <!--begin::Page Scripts(used by this page)-->
+        <script src="{{ asset('assets/js/pages/custom/wizard/wizard-2.js') }}"></script>
+        <!--end::Page Scripts-->
 
         @livewireScripts
         @stack('scripts')

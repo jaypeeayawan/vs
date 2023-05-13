@@ -14,17 +14,23 @@ class AdminPositionsComponent extends Component
     public $searchTerm;
     public $positionid;
     public $positionname;
+    public $maxvote;
     public $order;
 
     protected $messages = [
         'positionname.required' => 'Description cannot be empty',
         'positionname.unique' => 'Description already exist',
+        'maxvote.required' => 'Max Vote cannot be empty',
+        'order.required' => 'Priotrity level cannot be empty',
+        'order.unique' => 'Priority level already exist',
     ];
 
     public function updated($fields)
     {
         $this->validateOnly($fields, [
             'positionname' => 'required|unique:positions',
+            'maxvote' => 'required',
+            'order' => 'required|unique:positions',
         ]);
     }
 
@@ -32,12 +38,15 @@ class AdminPositionsComponent extends Component
     {
         $this->validate([
             'positionname' => 'required|unique:positions',
+            'maxvote' => 'required',
+            'order' => 'required|unique:positions',
         ]);
 
         try{
             $position = new Positions();
             $position->positionname = $this->positionname;
-            $position->order = 1;
+            $position->max_vote = $this->maxvote;
+            $position->order = $this->order;
             $position->save();
 
             // Set Flash Message
@@ -66,19 +75,23 @@ class AdminPositionsComponent extends Component
         $position = Positions::where('id', $id)->first();
         $this->positionid = $id;
         $this->positionname = $position->positionname;
-        // $this->order = $position->order;
+        $this->maxvote = $position->max_vote;
+        $this->order = $position->order;
     }
 
     public function update()
     {
         $this->validate([
             'positionname' => 'required|unique:positions,positionname,' . $this->positionid,
+            'maxvote' => 'required',
+            'order' => 'required|unique:positions,order,' . $this->positionid,
         ]);
 
         try{
             $position = Positions::find($this->positionid);
             $position->positionname = $this->positionname;
-            $position->order = 1;
+            $position->max_vote = $this->maxvote;
+            $position->order = $this->order;
             $position->save();
 
             // Set Flash Message
@@ -128,6 +141,8 @@ class AdminPositionsComponent extends Component
 
     private function resetInputFields(){
         $this->positionname = '';
+        $this->maxvote = '';
+        $this->order = '';
     }
 
     public function cancel()
