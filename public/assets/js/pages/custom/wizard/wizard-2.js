@@ -54,35 +54,38 @@ var KTWizard2 = (function () {
     // Step 1
     _validations.push(
       FormValidation.formValidation(_formEl, {
-        fields: {
-          President: {
-            validators: {
-              notEmpty: {
-                message: "President is required!",
-              },
-            },
-          },
-          VicePresident: {
-            validators: {
-              notEmpty: {
-                message: "Vice President is required",
-              },
-            },
-          },
-          Secretary: {
-            validators: {
-              notEmpty: {
-                message: "Secretary is required",
-              },
-            },
-          },
-        },
+        fields: {},
         plugins: {
           trigger: new FormValidation.plugins.Trigger(),
           bootstrap: new FormValidation.plugins.Bootstrap(),
         },
       })
     );
+
+    $("#election_form :input").map(function (index, elm) {
+      var input = $(this);
+      var inputValidator = '';
+      if (input.attr('max-vote') > 1) {
+        inputValidator = {
+          validators: {
+            choice: {
+              min: parseInt(input.attr('max-vote')),
+              max: parseInt(input.attr('max-vote')),
+              message: 'Please select '+parseInt($('input[name="BusinessManagers[]"]').attr('max-vote'))+' candidates to continue',
+            }
+          }
+        };
+      } else {
+        inputValidator = {
+          validators: {
+            notEmpty: {
+              message: 'This field is required'
+            }
+          }
+        };
+      }
+      _validations[0].addField(elm.name, inputValidator);
+    });
   };
 
   var initSelectedCandidates = function () {
@@ -91,48 +94,35 @@ var KTWizard2 = (function () {
     btn.on("click", function () {
       var html = '';
       var candidatesArr = new Array();
-      // var candidate = new Array();
-      // var position = '';
-      // var maxvote = '';
+      var positionsArr = new Array();
       $('.form-group').find('input:checked').each(function () { 
         var selected = $(this).attr('input-data');
         selected = selected.split('_');
 
-        // maxvote = selected[0];
-        
-        candidatesArr.push(selected[1]);
-        // if (jQuery.inArray(selected[1], candidatesArr) !== -1) candidatesArr.push(selected[1]);
-        
-        if(jQuery.inArray(selected[1], candidatesArr) != -1) {
-          console.log("is in array");
-      } else {
-          console.log("is NOT in array");
-      } 
+        if (!positionsArr.includes(selected[0])) {
+          positionsArr.push(selected[0]);
+        }
 
-        // console.log(candidatesArr);
+        candidatesArr.push({
+          position: selected[0],
+          candidate: selected[1]
+        });
 
-        // if (candidatesArr.indexOf(selected[1]) === -1) {
-        //   console.log('push');
-        // }
-
-
-
-        // if (maxvote == 1) {
-        //   html += `<h6 class="font-weight-bolder mb-3">` + position + `</h6>
-        //     <div class="text-dark-50 line-height-lg">
-        //       <div>` + candidate + `</div>
-        //     </div>
-        //   <div class="separator separator-dashed my-5"></div>`;
-        // } else {
-
-
-        //   html += `
-        //   <div class="text-dark-50 line-height-lg">
-        //     <div>` + candidate + `</div>
-        //   </div>`;
-        // }
       });
-
+      $.each(positionsArr, function (i, v) { 
+        html += `<h6 class="font-weight-bolder mb-3">` + v + `</h6>`;
+        $.each(candidatesArr, function (key, candidate) { 
+          html += `<div class="text-dark-50 line-height-lg">
+            <div>
+              <ul>`
+                if (v == candidate.position) {
+                  html += `<li>` + candidate.candidate + `</li>`;
+                }
+              html += `</ul>
+            </div>
+          </div>`;
+        }); 
+      });
       $("#selected-candidates").html(html);
     });
   };

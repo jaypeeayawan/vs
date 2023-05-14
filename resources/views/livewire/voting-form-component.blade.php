@@ -1,13 +1,13 @@
 @section('page-title')
-    {{ $pageTitle }}
+{{ $pageTitle }}
 @endsection
 
 <div class="mt-20 mb-20">
 
     <div class="d-flex flex-column-fluid">
-		<!--begin::Container-->
-		<div class=" container ">
-			<div class="card card-custom">
+        <!--begin::Container-->
+        <div class=" container ">
+            <div class="card card-custom">
                 <div class="card-body p-0">
                     <!--begin: Wizard-->
                     <div class="wizard wizard-2" id="kt_wizard_v2" data-wizard-state="first" data-wizard-clickable="false">
@@ -19,7 +19,7 @@
                                     <div class="symbol-label" style="background-image:url('assets/media/users/300_21.jpg')"></div>
                                     <i class="symbol-badge symbol-badge-bottom bg-success"></i>
                                 </div>
-            
+
                                 <h4 class="font-weight-bold my-2">
                                     {{ $voter->persons->lastname }}, {{ $voter->persons->firstname }} {{ $voter->persons->middlename }}
                                 </h4>
@@ -41,7 +41,7 @@
                                                     </g>
                                                 </svg>
                                                 <!--end::Svg Icon-->
-                                            </span>                            
+                                            </span>
                                         </div>
                                         <div class="wizard-label">
                                             <h3 class="wizard-title">
@@ -69,7 +69,7 @@
                                                     </g>
                                                 </svg>
                                                 <!--end::Svg Icon-->
-                                            </span>                            
+                                            </span>
                                         </div>
                                         <div class="wizard-label">
                                             <h3 class="wizard-title">
@@ -91,7 +91,15 @@
                             <!--begin: Wizard Form-->
                             <div class="row">
                                 <div class="offset-xxl-2 col-xxl-8">
-                                    <form class="form fv-plugins-bootstrap fv-plugins-framework" id="election_form">
+
+                                    @if ($vote)
+                                    <div class="alert alert-custom alert-danger" role="alert">
+                                        <div class="alert-icon"><i class="flaticon-questions-circular-button"></i></div>
+                                        <div class="alert-text">You already voted for this election</div>
+                                    </div>
+                                    @else
+                                    <form wire:submit.prevent="submit" type="POST" class="form fv-plugins-bootstrap fv-plugins-framework" id="election_form">
+
                                         <!--begin: Wizard Step 1-->
                                         <div class="pb-5" data-wizard-type="step-content" data-wizard-state="current">
                                             <h4 class="mb-10 font-weight-bold text-dark">
@@ -99,20 +107,13 @@
                                             </h4>
 
                                             <!--begin::Input-->
-                                            @if ($vote)
-                                                <div class="alert alert-custom alert-danger" role="alert">
-                                                    <div class="alert-icon"><i class="flaticon-questions-circular-button"></i></div>
-                                                    <div class="alert-text">You already voted for this election</div>
-                                                </div>
+                                            @if ($form)
+                                            {!! $candidates !!}
                                             @else
-                                                @if ($form)
-                                                    {!! $candidates !!}
-                                                @else
-                                                    <div class="alert alert-custom alert-danger" role="alert">
-                                                        <div class="alert-icon"><i class="flaticon-questions-circular-button"></i></div>
-                                                        <div class="alert-text">Election is closed</div>
-                                                    </div>
-                                                @endif
+                                            <div class="alert alert-custom alert-danger" role="alert">
+                                                <div class="alert-icon"><i class="flaticon-questions-circular-button"></i></div>
+                                                <div class="alert-text">Election is closed</div>
+                                            </div>
                                             @endif
                                             <!--end::Input-->
 
@@ -136,7 +137,7 @@
                                                 </button>
                                             </div>
                                             <div>
-                                                <button type="button" class="btn btn-success font-weight-bold text-uppercase px-9 py-4" data-wizard-type="action-submit">
+                                                <button type="submit" id="submit-vote" class="btn btn-success font-weight-bold text-uppercase px-9 py-4" data-wizard-type="action-submit">
                                                     Submit
                                                 </button>
                                                 <button type="button" class="btn btn-primary font-weight-bold text-uppercase px-9 py-4" data-wizard-type="action-next">
@@ -145,8 +146,9 @@
                                             </div>
                                         </div>
                                         <!--end: Wizard Actions-->
-                                    
                                     </form>
+                                    @endif
+
                                 </div>
                                 <!--end: Wizard-->
                             </div>
@@ -157,8 +159,33 @@
                     <!--end: Wizard-->
                 </div>
             </div>
-		</div>
-		<!--end::Container-->
-	</div>
-
+        </div>
+        <!--end::Container-->
+    </div>
 </div>
+
+@push('scripts')
+<script type="text/javascript">
+    window.addEventListener('alert', ({
+        detail: {
+            votersid,
+            type,
+            message
+        }
+    }) => {
+        Swal.fire({
+            title: message,
+            icon: type,
+            confirmButtonColor: '#3085d6',
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+        }).then((result) => {
+            if (result.isConfirmed) {
+                var url = '{{ route("voting.form", ":id") }}';
+                url = url.replace(":id", votersid);
+                window.location.href = url;
+            }
+        })
+    });
+</script>
+@endpush
