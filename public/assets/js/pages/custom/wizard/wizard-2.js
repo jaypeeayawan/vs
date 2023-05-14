@@ -71,7 +71,7 @@ var KTWizard2 = (function () {
             choice: {
               min: parseInt(input.attr('max-vote')),
               max: parseInt(input.attr('max-vote')),
-              message: 'Please select '+parseInt($('input[name="BusinessManagers[]"]').attr('max-vote'))+' candidates to continue',
+              message: 'Please select '+parseInt(input.attr('max-vote'))+' candidates to continue',
             }
           }
         };

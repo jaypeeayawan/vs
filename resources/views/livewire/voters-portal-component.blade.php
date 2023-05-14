@@ -20,10 +20,13 @@
                     <h3>Vote</h3>
                     <div class="text-muted font-weight-bold">Enter your details to vote</div>
                 </div>
-                <form method="POST" class="form">
+                <form wire:submit.prevent="auth" method="POST" class="form">
                     @csrf
                     <div class="form-group mb-5">
-                        <input class="form-control h-auto form-control-solid py-4 px-8" type="text" placeholder="Voters Number" name="votersnumber" autocomplete="off" />
+                        <input class="form-control h-auto form-control-solid py-4 px-8" type="text" placeholder="Voters Number" autocomplete="off" wire:model="votersnumber" />
+                        @error('votersnumber') 
+                            <span class="text-danger error">{{ $message }}</span>
+                        @enderror
                     </div>
                     <div class="form-group d-flex flex-wrap flex-center mt-10">
                         <button type="submit" class="btn btn-primary font-weight-bold px-9 py-4 my-3 mx-2">Submit</button>
@@ -36,3 +39,22 @@
         </div>
     </div>
 </div>
+
+@push('scripts')
+<script type="text/javascript">
+    window.addEventListener('alert',({detail:{type,message}})=>{
+        Swal.fire({
+            title: message,
+            icon: type,
+            confirmButtonColor: '#3085d6',
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // var url = '{{ route("voters.registration") }}';
+                // window.location.href = url;
+            }
+        })
+    });
+</script>
+@endpush

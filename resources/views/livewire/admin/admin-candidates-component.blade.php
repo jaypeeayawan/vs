@@ -99,9 +99,13 @@
                                         <tr>
                                             <td>
                                             @if ($candidate->photo)
-                                                <img src="{{ asset('photos/photos') }}/{{ $candidate->photo }}" alt="Photo" style="border-radius: 50%; height: 80px;">
+                                                <div class="symbol symbol-80">
+                                                    <img src="{{ asset('photos/photos') }}/{{ $candidate->photo }}" alt="Photo">
+                                                </div>
                                             @else
-                                                <img src="{{ asset('photos//photos/default.png') }}" alt="Photo" style="border-radius: 50%; width: 70px;">
+                                                <div class="symbol symbol-80">
+                                                    <img src="{{ asset('photos//photos/default.png') }}" alt="Photo">
+                                                </div>
                                             @endif
                                         </td>
                                             <td><span class="text-dark-75 font-weight-bolder d-block font-size-lg">{{ $candidate->lastname }}, {{ $candidate->firstname }} {{ $candidate->middlename }}</span></td>

@@ -12,25 +12,27 @@ use App\Models\Votes;
 class VotingFormComponent extends Component
 {
     public $votersid;
+    public $electformsid;
     public $selectedcandidates = [];
 
     public function mount($votersid)
     {
         $this->votersid = $votersid;
+
+        $form = ElectionForms::where('isactive', 1)
+            ->first();
+
+        $this->electformsid = ($form) ? $form->id : null;
     }
 
     public function submit()
     {
         $votedcandidates = $this->selectedcandidates;
         foreach ($votedcandidates as $votedcandidate) {
-            $candidatesdata = explode('_', $votedcandidate);
-            $candidatesid = $candidatesdata[0];
-            $electformsid = $candidatesdata[1];
-
             $vote = new Votes();
             $vote->voters_id = $this->votersid;
-            $vote->candidates_id = $candidatesid;
-            $vote->electionforms_id = $electformsid;
+            $vote->candidates_id = $votedcandidate;
+            $vote->electionforms_id = $this->electformsid;
             $vote->save();
         }
 
@@ -45,13 +47,7 @@ class VotingFormComponent extends Component
     public function render()
     {
         $pageTitle = 'Voting Form';
-        $form = ElectionForms::where('isactive', 1)
-            ->first();
-        $vote = Votes::where('voters_id', $this->votersid)
-            ->where('electionforms_id', $form->id)
-            ->first();
         $candidates = '';
-
         $positions = Positions::orderby('order', 'asc')->get();
         foreach ($positions as $position) {
             $names = Persons::select(
@@ -82,7 +78,7 @@ class VotingFormComponent extends Component
                     $candidates .= '<label class=' . $contenttype . '>
                         <input 
                             type="' . $contenttype . '" 
-                            value="' . $name->candidatesid . '_' . $name->electionformsid . '" 
+                            value="' . $name->candidatesid . '" 
                             name="' . $inputname . '"
                             input-data="' . $position->positionname . '_' . $name->lastname . ', ' . $name->firstname . ' ' . $name->middlename . '" 
                             max-vote="' . $position->max_vote . '"
@@ -103,8 +99,8 @@ class VotingFormComponent extends Component
             [
                 'pageTitle' => $pageTitle,
                 'voter' => Voters::where('id', $this->votersid)->first(),
-                'vote' => $vote,
-                'form' => $form,
+                'vote' => Votes::where('voters_id', $this->votersid)->where('electionforms_id', $this->electformsid)->first(),
+                'form' => ElectionForms::where('isactive', 1)->first(),
                 'positions' => $positions,
                 'candidates' => $candidates,
             ]

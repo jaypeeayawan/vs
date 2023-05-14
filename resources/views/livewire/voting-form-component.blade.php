@@ -93,62 +93,58 @@
                                 <div class="offset-xxl-2 col-xxl-8">
 
                                     @if ($vote)
-                                    <div class="alert alert-custom alert-danger" role="alert">
-                                        <div class="alert-icon"><i class="flaticon-questions-circular-button"></i></div>
-                                        <div class="alert-text">You already voted for this election</div>
-                                    </div>
+                                        <div class="alert alert-custom alert-danger" role="alert">
+                                            <div class="alert-icon"><i class="flaticon-questions-circular-button"></i></div>
+                                            <div class="alert-text">You already voted for this election</div>
+                                        </div>
                                     @else
-                                    <form wire:submit.prevent="submit" type="POST" class="form fv-plugins-bootstrap fv-plugins-framework" id="election_form">
+                                        @if ($form)
+                                            <form wire:submit.prevent="submit" type="POST" class="form fv-plugins-bootstrap fv-plugins-framework" id="election_form">
+                                                <!--begin: Wizard Step 1-->
+                                                <div class="pb-5" data-wizard-type="step-content" data-wizard-state="current">
+                                                    <h4 class="mb-10 font-weight-bold text-dark">
+                                                        {{ $form->title }}
+                                                    </h4>
+                                                    <!--begin::Input-->
+                                                    {!! $candidates !!}
+                                                    <!--end::Input-->
+                                                </div>
+                                                <!--end: Wizard Step 1-->
 
-                                        <!--begin: Wizard Step 1-->
-                                        <div class="pb-5" data-wizard-type="step-content" data-wizard-state="current">
-                                            <h4 class="mb-10 font-weight-bold text-dark">
-                                                {{ ($form) ? $form->title : 'Voting Ballot' }}
-                                            </h4>
+                                                <!--begin: Wizard Step 2-->
+                                                <div class="pb-5" data-wizard-type="step-content">
+                                                    <!--begin::Section-->
+                                                    <h4 class="mb-10 font-weight-bold text-dark">Review and Submit</h4>
+                                                    <div id="selected-candidates"></div>
+                                                    <!--end::Section-->
+                                                </div>
+                                                <!--end: Wizard Step 2-->
 
-                                            <!--begin::Input-->
-                                            @if ($form)
-                                            {!! $candidates !!}
-                                            @else
+                                                <!--begin: Wizard Actions-->
+                                                <div class="d-flex justify-content-between border-top mt-5 pt-10">
+                                                    <div class="mr-2">
+                                                        <button type="button" class="btn btn-light-primary font-weight-bold text-uppercase px-9 py-4" data-wizard-type="action-prev">
+                                                            Previous
+                                                        </button>
+                                                    </div>
+                                                    <div>
+                                                        <button type="submit" id="submit-vote" class="btn btn-success font-weight-bold text-uppercase px-9 py-4" data-wizard-type="action-submit">
+                                                            Submit
+                                                        </button>
+                                                        <button type="button" class="btn btn-primary font-weight-bold text-uppercase px-9 py-4" data-wizard-type="action-next">
+                                                            Next
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                                <!--end: Wizard Actions-->
+                                            </form>
+                                        @else
                                             <div class="alert alert-custom alert-danger" role="alert">
                                                 <div class="alert-icon"><i class="flaticon-questions-circular-button"></i></div>
                                                 <div class="alert-text">Election is closed</div>
                                             </div>
-                                            @endif
-                                            <!--end::Input-->
-
-                                        </div>
-                                        <!--end: Wizard Step 1-->
-
-                                        <!--begin: Wizard Step 2-->
-                                        <div class="pb-5" data-wizard-type="step-content">
-                                            <!--begin::Section-->
-                                            <h4 class="mb-10 font-weight-bold text-dark">Review and Submit</h4>
-                                            <div id="selected-candidates"></div>
-                                            <!--end::Section-->
-                                        </div>
-                                        <!--end: Wizard Step 2-->
-
-                                        <!--begin: Wizard Actions-->
-                                        <div class="d-flex justify-content-between border-top mt-5 pt-10">
-                                            <div class="mr-2">
-                                                <button type="button" class="btn btn-light-primary font-weight-bold text-uppercase px-9 py-4" data-wizard-type="action-prev">
-                                                    Previous
-                                                </button>
-                                            </div>
-                                            <div>
-                                                <button type="submit" id="submit-vote" class="btn btn-success font-weight-bold text-uppercase px-9 py-4" data-wizard-type="action-submit">
-                                                    Submit
-                                                </button>
-                                                <button type="button" class="btn btn-primary font-weight-bold text-uppercase px-9 py-4" data-wizard-type="action-next">
-                                                    Next
-                                                </button>
-                                            </div>
-                                        </div>
-                                        <!--end: Wizard Actions-->
-                                    </form>
+                                        @endif
                                     @endif
-
                                 </div>
                                 <!--end: Wizard-->
                             </div>
