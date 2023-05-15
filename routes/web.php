@@ -12,6 +12,7 @@ use App\Http\Livewire\Admin\AdminElectionFormsComponent;
 use App\Http\Livewire\Admin\AdminCandidatesComponent;
 use App\Http\Livewire\Admin\AdminVotersComponent;
 use App\Http\Livewire\Admin\AdminUsersComponent;
+use App\Http\Livewire\Admin\AdminResultsComponent;
 
 use App\Http\Livewire\User\UserDashboardComponent;
 
@@ -47,5 +48,6 @@ Route::middleware(['auth:sanctum', 'verified', 'authadmin'])->group(function () 
     Route::get('/admin/electionforms', AdminElectionFormsComponent::class)->name('admin.electionforms');
     Route::get('/admin/candidates', AdminCandidatesComponent::class)->name('admin.candidates');
     Route::get('/admin/voters', AdminVotersComponent::class)->name('admin.voters');
+    Route::get('/admin/results', AdminResultsComponent::class)->name('admin.results');
     Route::get('/admin/users', AdminUsersComponent::class)->name('admin.users');
 });
